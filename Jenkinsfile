@@ -7,7 +7,7 @@ pipeline {
         REPO_NAME = 'my-app-repo'
         ECR_URL = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        AWS_CREDENTIALS = 'aws-credentials' // Jenkins credential ID
+        AWS_CREDENTIALS = 'Aws-cred'
     }
 
     stages {
