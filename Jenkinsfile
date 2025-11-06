@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = 'ap-south-1'
-        ACCOUNT_ID = '123456789012'     // 👈 replace with your AWS account ID
-        REPO_NAME = 'my-app-repo'       // 👈 replace with your ECR repo name
+        AWS_REGION = 'us-east-1c'
+        ACCOUNT_ID = '795708474003'
+        REPO_NAME = 'my-app-repo'
         ECR_URL = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         AWS_CREDENTIALS = 'aws-credentials' // Jenkins credential ID
