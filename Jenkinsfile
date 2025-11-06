@@ -6,7 +6,7 @@ pipeline {
         ACCOUNT_ID = '795708474003'
         REPO_NAME = 'my-app-repo'
         ECR_URL = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        IMAGE_TAG = "${env.BUILD_NUMBER}"    // numeric tag like 1, 2, 3...
     }
 
     stages {
@@ -29,6 +29,7 @@ pipeline {
                 sh '''
                     docker build -t ${REPO_NAME}:${IMAGE_TAG} .
                     docker tag ${REPO_NAME}:${IMAGE_TAG} ${ECR_URL}/${REPO_NAME}:${IMAGE_TAG}
+                    docker tag ${REPO_NAME}:${IMAGE_TAG} ${ECR_URL}/${REPO_NAME}:latest
                 '''
             }
         }
@@ -37,6 +38,7 @@ pipeline {
             steps {
                 sh '''
                     docker push ${ECR_URL}/${REPO_NAME}:${IMAGE_TAG}
+                    docker push ${ECR_URL}/${REPO_NAME}:latest
                 '''
             }
         }
@@ -45,6 +47,7 @@ pipeline {
             steps {
                 sh '''
                     docker rmi ${ECR_URL}/${REPO_NAME}:${IMAGE_TAG} || true
+                    docker rmi ${ECR_URL}/${REPO_NAME}:latest || true
                     docker rmi ${REPO_NAME}:${IMAGE_TAG} || true
                 '''
             }
@@ -53,7 +56,9 @@ pipeline {
 
     post {
         success {
-            echo "✅ Successfully pushed image to ECR: ${ECR_URL}/${REPO_NAME}:${IMAGE_TAG}"
+            echo "✅ Image pushed successfully:"
+            echo "   ${ECR_URL}/${REPO_NAME}:${IMAGE_TAG}"
+            echo "   ${ECR_URL}/${REPO_NAME}:latest"
         }
         failure {
             echo "❌ Build failed. Check logs."
