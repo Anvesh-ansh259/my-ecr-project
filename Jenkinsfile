@@ -2,12 +2,11 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = 'us-east-1c'
+        AWS_REGION = 'us-east-1'
         ACCOUNT_ID = '795708474003'
         REPO_NAME = 'my-app-repo'
         ECR_URL = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        AWS_CREDENTIALS = 'Aws-cred'
     }
 
     stages {
@@ -19,11 +18,9 @@ pipeline {
 
         stage('Login to AWS ECR') {
             steps {
-                withAWS(credentials: "${AWS_CREDENTIALS}", region: "${AWS_REGION}") {
-                    sh '''
-                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_URL}
-                    '''
-                }
+                sh '''
+                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_URL}
+                '''
             }
         }
 
@@ -63,4 +60,3 @@ pipeline {
         }
     }
 }
-
