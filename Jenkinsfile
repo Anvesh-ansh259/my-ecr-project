@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/<your-username>/my-ecr-project.git'
+                git branch: 'main', url: 'https://github.com/Anvesh-ansh259/my-ecr-project.git'
             }
         }
 
